@@ -1,8 +1,11 @@
 import { NestFactory } from '@nestjs/core'
-import { INestApplication, Logger } from '@nestjs/common'
+import { INestApplication, Logger, ValidationPipe } from '@nestjs/common'
+
 import { AppModule } from './app.module'
 import { AppConfig } from '@common/services/config/app.config'
 import { AllExceptionsFilter } from '@common/filters/common-error.filter'
+import { AppError } from '@lib/app-error/app-error'
+import { VALIDATION } from '@lib/app-error/error-codes'
 
 function configLog() {
   Logger.log('----------')
@@ -14,6 +17,18 @@ function configLog() {
 const appConfig = (app: INestApplication) => {
   app.enableCors()
   app.useGlobalFilters(new AllExceptionsFilter(new Logger()))
+  app.useGlobalPipes(
+    new ValidationPipe({
+      exceptionFactory: (errors) => {
+        throw new AppError({ ...VALIDATION, errors })
+      },
+      stopAtFirstError: true,
+      validationError: {
+        value: true,
+        target: false,
+      },
+    }),
+  )
 }
 
 async function bootstrap() {

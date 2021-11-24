@@ -29,11 +29,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
       url: request.url,
     }
 
-    let originMessage = exception.message
-    if (Array.isArray(originMessage)) {
-      originMessage = JSON.stringify(originMessage)
-    }
-
     if (exception.stack && isDevMode) {
       stdout.write(
         chalk.red('--------------- ERROR STACK BEGIN --------------\n'),
@@ -45,19 +40,21 @@ export class AllExceptionsFilter implements ExceptionFilter {
       )
     }
 
-    const status = exception.status
+    const { status } = exception
     if (!notImportantStatuses.includes(status)) {
       // log all except minor error
-      this._logger.error(originMessage, exception)
+      this._logger.error(exception)
+      this._logger.debug(exception.req)
     }
 
     response
       .status(status || 500)
       .json({
         success: false,
-        message: originMessage,
         status,
-        statusCode: exception.statusCode || undefined
+        statusCode: exception.statusCode || undefined,
+        message: exception.message || undefined,
+        errors: exception.errors|| undefined // passed from global ValidationPipe
       })
   }
 }
