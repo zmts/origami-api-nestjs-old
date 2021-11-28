@@ -9,11 +9,11 @@ const notImportantStatuses = [400, 401, 403, 422]
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
-  constructor(
+  constructor (
     private _logger: Logger
   ) {}
 
-  catch(exception: any, host: ArgumentsHost) {
+  catch (exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse()
     const request = ctx.getRequest()

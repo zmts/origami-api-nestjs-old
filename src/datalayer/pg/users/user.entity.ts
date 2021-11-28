@@ -4,36 +4,46 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm'
 
 import { UserRoles } from './user.types'
+import { IUser } from './user.interface'
+import { PostEntity } from '../posts/post.entity'
 
 @Entity({ name: 'users' })
-export class UserEntity {
+export class UserEntity implements IUser {
   @PrimaryGeneratedColumn()
-    id: number
+  id?: number
 
-  @Column({
-    type: 'enum', enum: UserRoles,
-    default: UserRoles.user
-  })
-    role: string
+  @Column({ default: UserRoles.user })
+  role?: UserRoles
 
-  @Column()
-    email: string
+  @Column({ unique: true })
+  email?: string
 
   @Column({ default: null, nullable: true })
-    passwordHash: string
+  password?: string
 
   @Column({ default: null, nullable: true })
-    firstName?: string
+  firstName?: string
 
   @Column({ default: null, nullable: true })
-    secondName?: string
+  secondName?: string
 
   @CreateDateColumn()
-    createdAt?: Date
+  createdAt?: Date
 
   @UpdateDateColumn()
-    updatedAt?: Date
+  updatedAt?: Date
+
+  @OneToMany(() => PostEntity, post => post.user)
+  posts?: PostEntity[]
+
+  toJSON? () {
+    return {
+      ...this,
+      password: undefined
+    }
+  }
 }

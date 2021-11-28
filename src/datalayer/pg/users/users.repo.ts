@@ -1,15 +1,34 @@
 import { EntityRepository, Repository } from 'typeorm'
-import { Injectable } from '@nestjs/common'
-import { UserEntity } from './user.entity'
-import { AppError } from '@lib/app-error/app-error'
-import { NOT_FOUND } from '@lib/app-error/error-codes'
 
-@Injectable()
+import { CatchDBError } from '@datalayer/decorators/catch-db-error.decorator'
+import { UserEntity } from './user.entity'
+import { IUser } from './user.interface'
+
 @EntityRepository(UserEntity)
 export class UsersRepo extends Repository<UserEntity> {
-  async getUserById(userId: number) {
-    const data = await this.findOne({ id: userId })
-    if (data) return data
-    throw new AppError({ ...NOT_FOUND })
+  @CatchDBError
+  async getUserById (id: IUser['id']): Promise<UserEntity | null> {
+    const data = await this.findOne({ id })
+    if (data) return data || null
+  }
+
+  @CatchDBError
+  async getUserByEmail (email: IUser['email']): Promise<UserEntity | null> {
+    const data = await this.findOne({ email })
+    if (data) return data || null
+  }
+
+  @CatchDBError
+  async createUser (user: IUser): Promise<UserEntity> {
+    const { raw } = await this.insert(user)
+    const newUser = raw[0]
+    delete newUser.password
+    return newUser
+  }
+
+  @CatchDBError
+  async updateUser (user: IUser): Promise<UserEntity> { // ???
+    await this.update(user.id, user)
+    return user
   }
 }

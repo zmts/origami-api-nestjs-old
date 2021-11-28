@@ -60,4 +60,8 @@ export class ConfigValidationSchema {
   @IsNotEmptyObject()
   @ValidateNested()
     dbConfig: DbConfig
+
+  @IsNotEmpty()
+  @Expose()
+    accessTokenSecret: string
 }

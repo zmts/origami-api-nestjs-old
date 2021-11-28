@@ -38,6 +38,16 @@ export const SERVER = {
   status: 500,
   statusCode: 'SERVER_ERROR',
 }
+export const TOKEN_EXPIRED = {
+  message: 'Token expired',
+  status: 419,
+  statusCode: 'TOKEN_EXPIRED_ERROR'
+}
+export const TOKEN_VERIFY = {
+  message: 'Token verify error',
+  status: 401,
+  statusCode: 'TOKEN_VERIFY_ERROR'
+}
 export const EXTERNAL = {
   message: 'External service error occurred',
   status: 500,

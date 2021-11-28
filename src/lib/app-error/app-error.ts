@@ -12,6 +12,7 @@ export class AppError extends Error {
   public status: number
   public statusCode: string
   public description: string
+  public origin: any
 
   constructor(src: any) {
     super()
@@ -23,5 +24,6 @@ export class AppError extends Error {
     this.message = src.message || SERVER.message
     this.description = src.description || undefined
     this.errors = src.errors || undefined
+    this.origin = src.origin || undefined
   }
 }

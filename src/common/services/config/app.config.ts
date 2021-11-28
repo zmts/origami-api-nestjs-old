@@ -37,5 +37,9 @@ export class AppConfig {
   static get dbConfig (): SQLConfig {
     return this._config.dbConfig
   }
+
+  static get accessTokenSecret (): string {
+    return this._config.accessTokenSecret
+  }
 }
 
