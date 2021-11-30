@@ -4,15 +4,12 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
 } from 'typeorm'
 
 import { UserRoles } from './user.types'
-import { IUser } from './user.interface'
-import { PostEntity } from '../posts/post.entity'
 
 @Entity({ name: 'users' })
-export class UserEntity implements IUser {
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
@@ -36,9 +33,6 @@ export class UserEntity implements IUser {
 
   @UpdateDateColumn()
   updatedAt?: Date
-
-  @OneToMany(() => PostEntity, post => post.user)
-  posts?: PostEntity[]
 
   toJSON? () {
     return {

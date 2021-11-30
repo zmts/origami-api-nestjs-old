@@ -8,10 +8,12 @@ import { AppService } from './app.service'
 
 import { UsersModule } from '@root/modules/users/users.module'
 import { AuthModule } from '@root/modules/auth/auth.module'
+import { PostsModule } from '@root/modules/posts/posts.module'
 
 import { AppConfig } from '@common/services/config/app.config'
 import { AuthMiddleware } from '@root/middlewares/auth.middleware'
 import { UserSubscriber } from '@datalayer/pg/users/user.subscriber'
+
 
 const entities = [
   `${__dirname}/datalayer/pg/users/*.entity{.ts,.js}`,
@@ -34,7 +36,8 @@ const entities = [
     }),
     RouterModule.register(routes),
     UsersModule,
-    AuthModule
+    AuthModule,
+    PostsModule
   ],
   controllers: [AppController],
   providers: [AppService],
