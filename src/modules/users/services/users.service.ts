@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 
 import { AppError } from '@lib/app-error/app-error'
 import { DB_DUPLICATE_CONFLICT } from '@lib/app-error/error-codes'
